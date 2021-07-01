@@ -4,6 +4,8 @@ from kivy.uix.screenmanager import Screen, ScreenManager
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivy.properties import ObjectProperty, ListProperty, StringProperty
 from kivy.lang.builder import Builder
+from demo import demo
+
 Builder.load_file('story.kv')
 Window.size = (365, 600)
 
