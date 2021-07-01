@@ -1,0 +1,65 @@
+<ChatListItem>:
+    ripple_behaviour: True #for ripple effect on click
+    md_bg_color: 0,0,0,0
+    elevation: 0
+    size_hint_y: None
+    padding: [10, 0, 10, 0]
+    spacing: dp(10)
+    height: chat_avatar.height + dp(10)
+    Avatar:
+        id: chat_avatar
+        source: root.friend_avatar
+        pos_hint: {"center_y":.5}
+        radius: [30,]
+    MDBoxLayout:
+        orientation: 'vertical'
+        padding: [0, 0, 0, 10]
+        spacing: dp(2)
+
+        Label:
+            id: chat_username
+            text: root.friend_name
+            theme_text_color: 'Custom'
+            size: self.texture_size
+            size_hint: None, None
+            font_size: sp(15)
+            color: app.theme_cls.opposite_bg_normal
+            bold: True
+
+        MDLabel:
+            id: last_message
+            text: root.message
+            height: self.texture_size[1]
+            theme_text_color: 'Custom'
+            size_hint_y: None
+            bold: True
+            font_size: sp(13)
+            color: [.5,.5,.5,1] if root.is_read == 'new' else app.theme_cls.primary_color
+            shorten: True
+            shorten_from: 'right'
+    BoxLayout:
+        orientation: 'vertical'
+        width: time.width
+        size_hint_x: None
+        pos_hint: {"center_y": .5}
+        spacing: dp(2)
+        padding: [0, 15, 0, 5]
+
+        Label:
+            id: time
+            text: root.time_stamp
+            size: self.texture_size
+            size_hint: None, None
+            font_size: dp(11)
+            color: app.theme_cls.opposite_bg_normal
+
+        MDIcon:
+            #: set icons {'read': 'checkbox-multiple-marked-circle', 'delivered': 'checkbox-multiple-marked-circle-outline', 'new':'numeric-1-circle', 'sent':'check-circle-outline'}
+            id: chat_icon
+            theme_text_color: 'Custom'
+            icon: root.status_icon
+            size_hint: None, None
+            font_size: dp(17)
+            size: dp(20), dp(20)
+            pos_hint: {"center_x": .5, "center_y": .5}
+            text_color: app.theme_cls.primary_color
