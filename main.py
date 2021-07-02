@@ -3,13 +3,18 @@ from kivy.core.window import Window
 from kivy.uix.screenmanager import Screen, ScreenManager
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.card import MDCard
+from kivy.animation import Animation
+from kivy.clock import Clock
 from kivy.properties import OptionProperty, DictProperty, StringProperty, BooleanProperty
 from kivy.lang.builder import Builder
+from kivy.uix.textinput import TextInput
+from functools import partial
 from demo.demo import profiles
 
 Builder.load_file('story.kv')
 Builder.load_file('chat_list.kv')
 Builder.load_file('chat_screen.kv')
+Builder.load_file('text_field.kv')
 Window.size = (365, 600)
 
 
@@ -42,7 +47,37 @@ class ChatScreen(Screen):
     """"A screen that displays chat with a user"""
     text = StringProperty()
     image = StringProperty()
+    active_text = StringProperty()
     active = BooleanProperty()
+
+class ChatTextInput(TextInput):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+
+    def on_focus(self, instance, value):
+        if value:
+            # print('User focused', instance)
+            pass
+        else:
+            # print('User defocused', value)
+            pass
+
+    def on_text(self, instance, value):
+        print('The widget', instance, 'have:', value)
+        text_data = self.text
+        send_mic = MDApp.get_running_app().root.ids.chat_screen.ids.send_microphone
+        # print(send_mic)
+        if text_data  == "":
+            send_mic.icon = 'microphone'
+            # Animation(icon = 'microphone', d=0.4).start(send_mic)
+        else:
+            send_mic.icon = 'send'
+            # Animation(icon = 'send', d=0.4).start(send_mic)
+
+        # try to adjust cursor position
+
+    def set_cursor(self, pos, dt):
+        self.cursor = pos
 
 class ChatApp(MDApp):
     def build(self):
@@ -62,7 +97,6 @@ class ChatApp(MDApp):
     def story_builder(self):
         # create story for each user and add to the layout
         story_item = self.root.ids.message_screen.ids.story_layout
-        print(story_item)
         for profile in profiles:
             story_item.add_widget(
                 StoryWithImage(
@@ -81,7 +115,7 @@ class ChatApp(MDApp):
                     'delivered': 'checkbox-multiple-marked-circle-outline',
                     'new':'numeric-1-circle',
                     'sent':'check-circle-outline',
-                    'waiting':'dots-horizontal-circle-outline'}
+                    'waiting':'clock-outline'}
                 status_icon = icons[is_read] if is_read in icons.keys() else ''
 
             chat_time_line.add_widget(
@@ -96,5 +130,30 @@ class ChatApp(MDApp):
                     )
                 )
 
+    def create_chat(self, profile):
+        """Get all user messages and create chat bubles"""
+        last_seen = "18:00"
+        active = profile['active']
+        if active:
+            active_text = "Online"
+        else:
+            active_text = f"last seen {last_seen}"
+
+        chat_screen = ChatScreen(
+            text = profile['name'],
+            image = profile['image'],
+            active = active,
+            active_text = active_text
+        )
+        # self.root.add_widget(chat_screen)
+        self.root.switch_to(chat_screen)
+
+
+    def delete_chat(self):
+        chat_screen = self.root
+        # print(chat_screen)
+        print(dir(chat_screen))
+
+        # self.root.remove_widget(ChatScreen(name="chat_screen"))
 
 ChatApp().run()

@@ -6,6 +6,10 @@
     padding: [10, 0, 10, 0]
     spacing: dp(10)
     height: chat_avatar.height + dp(10)
+    on_press:
+        app.create_chat(root.profile)
+        # app.root.current = "chat_screen"
+
     Avatar:
         id: chat_avatar
         source: root.friend_avatar

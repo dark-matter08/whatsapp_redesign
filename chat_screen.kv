@@ -14,13 +14,14 @@
                 icon: 'arrow-left'
                 theme_text_color: 'Custom'
                 text_color: app.theme_cls.opposite_bg_normal
-                user_font_size: dp(18)
+                user_font_size: dp(20)
                 size_hint: None, None
                 pos_hint: {"center_y":.5}
                 size: dp(30), dp(30)
                 padding: 0
                 on_press:
                     app.root.current = "message_screen"
+                    app.delete_chat()
 
             MDBoxLayout:
                 size_hint: None, None
@@ -57,7 +58,7 @@
                         size_hint: None, None
 
                     Label:
-                        text: 'Active' if root.active == True else "Offline"
+                        text: root.active_text
                         size: self.texture_size
                         size_hint: None, None
                         font_size: sp(10)
@@ -66,8 +67,76 @@
             MDBoxLayout:
                 size_hint_x: None
                 spacing: dp(5)
+                adaptive_width: True
+                # padding: [0, 5, 10, 0]
 
                 MDIconButton:
-                    icon: 'video-outliine'
+                    icon: 'video-outline'
                     theme_text_color: 'Custom'
                     text_color: app.theme_cls.primary_color
+                    user_font_size: sp(15)
+                    size_hint: None, None
+                    pos_hint: {"center_y": .5}
+                    size: dp(30), dp(30)
+                    padding: dp(0)
+                    md_bg_color: app.theme_cls.bg_darkest if app.theme_cls.theme_style == "Light" else app.theme_cls.bg_dark
+
+                MDIconButton:
+                    icon: 'phone'
+                    theme_text_color: 'Custom'
+                    text_color: app.theme_cls.primary_color
+                    user_font_size: sp(15)
+                    size_hint: None, None
+                    pos_hint: {"center_y": .5}
+                    size: dp(30), dp(30)
+                    padding: dp(0)
+                    md_bg_color: app.theme_cls.bg_darkest if app.theme_cls.theme_style == "Light" else app.theme_cls.bg_dark
+
+                MDIconButton:
+                    icon: 'dots-vertical'
+                    theme_text_color: 'Custom'
+                    text_color: app.theme_cls.primary_color
+                    user_font_size: sp(15)
+                    size_hint: None, None
+                    pos_hint: {"center_y": .5}
+                    size: dp(30), dp(30)
+                    padding: dp(0)
+                    md_bg_color: app.theme_cls.bg_darkest if app.theme_cls.theme_style == "Light" else app.theme_cls.bg_dark
+
+        ScrollView:
+            MDList:
+                id: message_history
+                spacing: dp(5)
+                padding: [0, 10, 0, 10]
+
+        MDBoxLayout:
+            padding: [10,]
+            spacing: dp(5)
+            size_hint_y: None
+            height: dp(40)
+            md_bg_color: app.theme_cls.bg_normal
+
+            # add text field here
+            TextField:
+
+            MDIconButton:
+                id: send_microphone
+                size_hint: None, None
+                icon: 'microphone'
+                elevation: 0
+                size: dp(30), dp(30)
+                user_font_size: sp(20)
+                theme_text_color: 'Custom'
+                text_color: [1, 1, 1, 1]
+                bold: True
+                md_bg_color: app.theme_cls.accent_color
+
+                # rotating the MDIconButton
+
+                # canvas.before:
+                #     PushMatrix:
+                #     Rotate:
+                #         angle: 30
+                #         origin: self.center
+                #         canvas.after:
+                #         PopMatrix

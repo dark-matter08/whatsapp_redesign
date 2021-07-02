@@ -1,6 +1,7 @@
 #:import FadeTransition kivy.uix.screenmanager.FadeTransition
 
 
+
 <MessageScreen>:
     MDBoxLayout:
         orientation : 'vertical'
@@ -57,9 +58,7 @@ ScreenManager:
     id: screen_manager
     transition: FadeTransition()
 
-    ChatScreen:
-        id: chat_screen
-        name: "chat_screen"
     MessageScreen:
         id : message_screen
         name: "message_screen"
+    
