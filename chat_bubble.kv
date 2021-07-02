@@ -1,0 +1,75 @@
+<ChatBubble>:
+    id: chat_bubble
+    md_bg_color: [0, 0, 0, 0]
+    size_hint_y: None
+    height: 60
+    adaptive_height: True
+    width: root.width
+    padding: [10, 0, 10, 0]
+    orientation: 'vertical'
+
+    MDBoxLayout:
+        height: msg_content.height + time.height + 10
+        width: msg_content.width + wid1.width + wid3.width
+        size_hint: None, None
+        pos_hint: {'right':1} if chat_bubble.sender == 'you' else {'left':1}
+        radius: [10, 10, (1, -5), 10] if self.pos_hint == {'right':1} else [10, 10, 10, (1, -5)]
+        md_bg_color: app. theme_cls.bg_darkest if app.theme_cls == "Light" else app.theme_cls.bg_dark
+
+        Spacer:
+            id: wid1
+
+        MDBoxLayout:
+            orientation: 'vertical'
+            height: msg_content.height + time_and_icon.height + wid2.height
+            width: msg_content.width
+
+            MDLabel:
+                id: msg_content
+                text: root.message
+                width: time_and_icon.width if self.texture_size[0] < time_and_icon.width else self.texture_size[0]
+                height: self.texture_size[1]
+                size_hint_y: None
+                text_size: chat_bubble.width - 30 if self.width >= chat_bubble.width - 30 else None, None
+                halign: 'left'
+                color: app.theme_cls.opposite_bg_normal
+
+            MDBoxLayout:
+                id: time_and_icon
+                size_hint_y: None
+                height: time.height
+                width: time.width + reciept_icon.width + dp(3)
+                spacing: 3
+                MDLabel:
+                    id: time
+                    text: root.time
+                    size: self.texture_size
+                    size_hint_y: None
+                    font_size: 9
+                    bold: True
+                    halign: 'right'
+                    text_size: None, None
+                    color: [.8, .8, .8, 1]
+
+                MDIcon:
+                    id: reciept_icon
+                    theme_text_color: 'Custom'
+                    icon: root.bubble_icon
+                    size_hint: None, None
+                    font_size: 12
+                    size: 12, 12
+                    color: time.color
+
+            Spacer:
+                id: wid2
+                height: 5
+
+        Spacer:
+            id: wid3
+            # height: 5
+
+
+<Spacer@Widget>:
+    id : wid
+    width: 5
+    size_hint: None, None

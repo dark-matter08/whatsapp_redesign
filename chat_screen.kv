@@ -7,13 +7,13 @@
             size_hint_y: None
             height: dp(50)
             spacing: dp(5)
-            md_bg_color: app.theme_cls.bg_normal
+            md_bg_color: app.theme_cls.accent_color
             padding: [0, 0, 10, 0]
 
             MDIconButton:
                 icon: 'arrow-left'
                 theme_text_color: 'Custom'
-                text_color: app.theme_cls.opposite_bg_normal
+                text_color: app.theme_cls.bg_normal
                 user_font_size: dp(20)
                 size_hint: None, None
                 pos_hint: {"center_y":.5}
@@ -21,10 +21,10 @@
                 padding: 0
                 on_press:
                     app.root.current = "message_screen"
-                    app.delete_chat()
 
             MDBoxLayout:
                 size_hint: None, None
+                # theme_text_color: 'Custom'
                 size: dp(30), dp(30)
                 orientation: 'vertical'
                 pos_hint: {"center_y":.5}
@@ -42,7 +42,7 @@
                     size: self.texture_size
                     size_hint: None, None
                     font_size: sp(12)
-                    color: app.theme_cls.opposite_bg_normal
+                    color: app.theme_cls.bg_normal
                     bold: True
 
                 MDBoxLayout:
@@ -62,7 +62,7 @@
                         size: self.texture_size
                         size_hint: None, None
                         font_size: sp(10)
-                        color: app.theme_cls.opposite_bg_normal
+                        color: app.theme_cls.bg_normal
 
             MDBoxLayout:
                 size_hint_x: None
@@ -71,37 +71,37 @@
                 # padding: [0, 5, 10, 0]
 
                 MDIconButton:
-                    icon: 'video-outline'
+                    icon: 'video'
                     theme_text_color: 'Custom'
-                    text_color: app.theme_cls.primary_color
-                    user_font_size: sp(15)
+                    text_color: app.theme_cls.bg_normal
+                    user_font_size: sp(20)
                     size_hint: None, None
                     pos_hint: {"center_y": .5}
                     size: dp(30), dp(30)
                     padding: dp(0)
-                    md_bg_color: app.theme_cls.bg_darkest if app.theme_cls.theme_style == "Light" else app.theme_cls.bg_dark
+                    md_bg_color: app.theme_cls.accent_color if app.theme_cls.theme_style == "Light" else app.theme_cls.accent_color
 
                 MDIconButton:
                     icon: 'phone'
                     theme_text_color: 'Custom'
-                    text_color: app.theme_cls.primary_color
-                    user_font_size: sp(15)
+                    text_color: app.theme_cls.bg_normal
+                    user_font_size: sp(20)
                     size_hint: None, None
                     pos_hint: {"center_y": .5}
                     size: dp(30), dp(30)
                     padding: dp(0)
-                    md_bg_color: app.theme_cls.bg_darkest if app.theme_cls.theme_style == "Light" else app.theme_cls.bg_dark
+                    md_bg_color: app.theme_cls.accent_color if app.theme_cls.theme_style == "Light" else app.theme_cls.accent_color
 
                 MDIconButton:
                     icon: 'dots-vertical'
                     theme_text_color: 'Custom'
-                    text_color: app.theme_cls.primary_color
-                    user_font_size: sp(15)
+                    text_color: app.theme_cls.bg_normal
+                    user_font_size: sp(20)
                     size_hint: None, None
                     pos_hint: {"center_y": .5}
                     size: dp(30), dp(30)
                     padding: dp(0)
-                    md_bg_color: app.theme_cls.bg_darkest if app.theme_cls.theme_style == "Light" else app.theme_cls.bg_dark
+                    md_bg_color: app.theme_cls.accent_color if app.theme_cls.theme_style == "Light" else app.theme_cls.accent_color
 
         ScrollView:
             MDList:
@@ -110,6 +110,7 @@
                 padding: [0, 10, 0, 10]
 
         MDBoxLayout:
+            id : right_text_field_icons
             padding: [10,]
             spacing: dp(5)
             size_hint_y: None

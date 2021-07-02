@@ -8,6 +8,7 @@ from kivy.clock import Clock
 from kivy.properties import OptionProperty, DictProperty, StringProperty, BooleanProperty
 from kivy.lang.builder import Builder
 from kivy.uix.textinput import TextInput
+from kivymd.uix.label import MDLabel
 from functools import partial
 from demo.demo import profiles
 
@@ -15,6 +16,7 @@ Builder.load_file('story.kv')
 Builder.load_file('chat_list.kv')
 Builder.load_file('chat_screen.kv')
 Builder.load_file('text_field.kv')
+Builder.load_file('chat_bubble.kv')
 Window.size = (365, 600)
 
 
@@ -40,7 +42,7 @@ class ChatListItem(MDCard):
     time_stamp = StringProperty()
     status_icon = StringProperty()
     profile = DictProperty()
-    is_read = OptionProperty(None, options=['delivered', 'read', 'new', 'waiting', 'sent'])
+    is_read = OptionProperty(None, options=['delivered', 'read', 'new', 'waiting', 'sent', 'read_by_me', 'unread'])
 
 # =========== Chat screen classes =============
 class ChatScreen(Screen):
@@ -51,6 +53,7 @@ class ChatScreen(Screen):
     active = BooleanProperty()
 
 class ChatTextInput(TextInput):
+    send_microphone = StringProperty()
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
@@ -63,10 +66,9 @@ class ChatTextInput(TextInput):
             pass
 
     def on_text(self, instance, value):
-        print('The widget', instance, 'have:', value)
+        # print('The widget', instance, 'have:', value)
         text_data = self.text
-        send_mic = MDApp.get_running_app().root.ids.chat_screen.ids.send_microphone
-        # print(send_mic)
+        send_mic = self.parent.parent.children[0]
         if text_data  == "":
             send_mic.icon = 'microphone'
             # Animation(icon = 'microphone', d=0.4).start(send_mic)
@@ -79,6 +81,17 @@ class ChatTextInput(TextInput):
     def set_cursor(self, pos, dt):
         self.cursor = pos
 
+class ChatBubble(MDBoxLayout):
+    message = StringProperty()
+    time = StringProperty()
+    bubble_icon = StringProperty()
+    sender = StringProperty()
+    is_read = OptionProperty('waiting', options=['delivered', 'read', 'waiting', 'sent'])
+
+class Message(MDLabel):
+    """ The addaptiveMessage to be placed in the chat buble"""
+
+
 class ChatApp(MDApp):
     def build(self):
         # load the kv file
@@ -89,9 +102,13 @@ class ChatApp(MDApp):
         # setting theme properties
 
         self.theme_cls.primary_palete = 'Teal' #Main color
-        self.theme_cls.theme_style = 'Light' #Dark theme
-        # self.theme_cls.accent_color = 'Teal'  #Second color with 400 hue value
-        self.theme_cls.accent_hue = '400'
+        self.theme_cls.theme_style = 'Dark' #Dark theme
+        # self.theme_cls.theme_style = 'Light' #Light theme
+        self.theme_cls.accent_palette = 'Teal'  #Second color with 400 hue value
+
+        self.theme_cls.primary_hue = '400'
+        self.theme_cls.primary_dark_hue = '900'
+        self.theme_cls.primary_light_hue = '200'
         self.title = 'WhatsApp Redesign'
 
     def story_builder(self):
@@ -109,13 +126,15 @@ class ChatApp(MDApp):
         chat_time_line = self.root.ids.message_screen.ids.chat_time_line
         for profile in profiles:
             for message in profile['msg']:
-                last_message, time, is_read, sender = message.split(';')
+                last_message, time, is_read, sender, unread = message.split(';')
                 icons = {
                     'read': 'checkbox-multiple-marked-circle',
                     'delivered': 'checkbox-multiple-marked-circle-outline',
-                    'new':'numeric-1-circle',
+                    'new':f'numeric-{unread}-circle',
                     'sent':'check-circle-outline',
                     'waiting':'clock-outline'}
+
+
                 status_icon = icons[is_read] if is_read in icons.keys() else ''
 
             chat_time_line.add_widget(
@@ -146,14 +165,30 @@ class ChatApp(MDApp):
             active_text = active_text
         )
         # self.root.add_widget(chat_screen)
+        self.message_builder(profile, chat_screen)
         self.root.switch_to(chat_screen)
 
+    def message_builder(self, profile, screen):
+        # create message bubles for chat screen
+        for messages in profile['msg']:
+            if messages != "":
+                message, time, is_read, sender, unread = messages.split(';')
+                icons = {
+                    'read': 'check-bold',
+                    'delivered': 'check-all',
+                    'sent':'check',
+                    'waiting':'clock-outline'}
 
-    def delete_chat(self):
-        chat_screen = self.root
-        # print(chat_screen)
-        print(dir(chat_screen))
+                bubble_icon = icons[is_read] if is_read in icons.keys() else ''
 
-        # self.root.remove_widget(ChatScreen(name="chat_screen"))
+                chat_bubble = ChatBubble(
+                    message = message,
+                    time = time,
+                    bubble_icon = bubble_icon,
+                    sender = sender
+                )
+                screen.ids.message_history.add_widget(chat_bubble)
+
+
 
 ChatApp().run()

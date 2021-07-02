@@ -1,25 +1,26 @@
 <TextField@MDCard>:
-    md_bg_color: [.9, .9, .9, .9]
+    md_bg_color: [1, 1, 1, .5]
     elevation: 0
     height: dp(40)
     size_hint_y: None
-    radius: [18, ]
+    radius: [20, ]
     padding: [5, 5, 5, 5]
 
     MDIconButton:
-        icon: 'emoticon-happy'
+        icon: 'emoticon-happy-outline'
         size_hint_x: None
         user_font_size: sp(20)
         size_hint: None, None
         pos_hint: {'center_y':.5}
         theme_text_color: 'Custom'
+        text_color: [.5,.5,.5,1]
         size: dp(30), dp(30)
         padding: 0
 
     ChatTextInput:
         id: text_input
         font_size: sp(14)
-        cursor_color: .5,.5,.5,1
+        cursor_color: app.theme_cls.accent_color
         color_mode: 'Custom'
         background_color: 0,0,0,0
         current_hint_text_color: .5,.5,.5, 1
@@ -36,13 +37,14 @@
         size_hint: None, None
         pos_hint: {'center_y':.5}
         theme_text_color: 'Custom'
+        text_color: [.5,.5,.5,1]
         size: dp(30), dp(30)
         padding: 0
 
         canvas.before:
             PushMatrix:
             Rotate:
-                angle: -45
+                angle: 45 - 360
                 origin: self.center
         canvas.after:
             PopMatrix
@@ -54,5 +56,6 @@
         size_hint: None, None
         pos_hint: {'center_y':.5}
         theme_text_color: 'Custom'
+        text_color: [.5,.5,.5,1]
         size: dp(30), dp(30)
         padding: 0

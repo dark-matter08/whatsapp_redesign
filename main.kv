@@ -5,10 +5,11 @@
 <MessageScreen>:
     MDBoxLayout:
         orientation : 'vertical'
-        md_bg_color : app.theme_cls.bg_normal
+        md_bg_color : app.theme_cls.accent_color
 
         MDToolbar:
             id: logo_tool_bar
+            md_bg_color: app.theme_cls.accent_color
             height: dp(50)
             title: "WhatsApp"
             right_action_items:[['dots-vertical', lambda x:x]]
@@ -22,7 +23,7 @@
             MDBoxLayout:
                 adaptive_height: True
                 orientation: 'vertical'
-                md_bg_color: app.theme_cls.primary_color
+                md_bg_color: app.theme_cls.accent_color
                 spacing: dp(20)
 
                 MDBoxLayout:
@@ -61,4 +62,3 @@ ScreenManager:
     MessageScreen:
         id : message_screen
         name: "message_screen"
-    
