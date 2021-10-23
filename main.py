@@ -5,6 +5,7 @@ from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.card import MDCard
 from kivy.animation import Animation
 from kivy.clock import Clock
+from kivymd.uix.behaviors import RectangularRippleBehavior
 from kivy.properties import OptionProperty, DictProperty, StringProperty, BooleanProperty
 from kivy.lang.builder import Builder
 from kivy.uix.textinput import TextInput
@@ -17,7 +18,7 @@ Builder.load_file('chat_list.kv')
 Builder.load_file('chat_screen.kv')
 Builder.load_file('text_field.kv')
 Builder.load_file('chat_bubble.kv')
-Window.size = (365, 600)
+Window.size = (345, 600)
 
 
 # =========== Message Screen classes ==========
@@ -34,7 +35,7 @@ class StoryWithIcon(MDBoxLayout):
     text = StringProperty()
     icon = StringProperty()
 
-class ChatListItem(MDCard):
+class ChatListItem(RectangularRippleBehavior, MDCard):
     """A clickable row for chats"""
     message = StringProperty()
     friend_avatar = StringProperty()
@@ -90,7 +91,6 @@ class ChatBubble(MDBoxLayout):
 
 class Message(MDLabel):
     """ The addaptiveMessage to be placed in the chat buble"""
-
 
 class ChatApp(MDApp):
     def build(self):
